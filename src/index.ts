@@ -43,27 +43,11 @@ enum CellType {
 
 
 /**
- * An enum which describes which interface property has changed.
- */
-export
-enum CellProperty {
-  CellType,
-  Tags,
-  Deletable,
-  Mergable,
-  Splittable,
-  Rendered,
-  Marked,
-  Format
-}
-
-
-/**
  * The arguments object emitted with the `stateChanged` signal.
  */
 export
 interface ICellChangedArgs<T> {
-  which: CellProperty,
+  name: string,
   oldValue: T;
   newValue: T;
 }
