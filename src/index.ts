@@ -15,6 +15,10 @@ import {
 } from 'phosphor-observablelist';
 
 import {
+  ISignal
+} from 'phosphor-signaling';
+
+import {
   Widget
 } from 'phosphor-widget';
 
@@ -54,6 +58,16 @@ interface ICellChangedArgs<T> {
 
 
 /**
+ * An object which is serializable.
+ */
+export
+interface ISerializable {
+  toJSON(): any;
+  fromJSON(data: any): void;
+}
+
+
+/**
  * The definition of a model object for a base cell.
  */
 interface IBaseCellViewModel {
@@ -61,7 +75,7 @@ interface IBaseCellViewModel {
   /**
    * The type of cell.
    */
-  cellType: CellType;
+  type: CellType;
 
   /**
    * Tags applied to the cell.
@@ -71,7 +85,7 @@ interface IBaseCellViewModel {
   /**
    * Get namespaced metadata about the cell.
    */
-  getMetadata(namespace: string) : IObservableMap<string, JSONData>;
+  getMetadata(namespace: string) : IObservableMap<string, ISerializable>;
 
   /**
    * The input area of the cell.
@@ -128,7 +142,7 @@ interface ICodeCellViewModel extends IBaseCellViewModel {
 /**
  * The definition of a raw cell.
  */
-export 
+export
 interface IRawCellViewModel extends IBaseCellViewModel {
 
   /**
@@ -146,7 +160,7 @@ interface IRawCellViewModel extends IBaseCellViewModel {
 /**
  * The definition of a markdown cell.
  */
-export 
+export
 interface IMarkdownCellViewModel extends IBaseCellViewModel {
 
   /**
@@ -160,7 +174,7 @@ interface IMarkdownCellViewModel extends IBaseCellViewModel {
 /**
  * A model consisting of any valid cell type.
  */
-export 
+export
 type ICellViewModel =  (
   IRawCellViewModel | IMarkdownCellViewModel | ICodeCellViewModel
 );
