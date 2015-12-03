@@ -44,7 +44,14 @@ Run Tests
 Follow the source build instructions first.
 
 ```bash
+# run tests in Firefox
 npm test
+
+# run tests in Chrome
+npm run test:chrome
+
+# run tests in IE
+npm run test:ie
 ```
 
 
@@ -70,17 +77,6 @@ Earlier versions may also work, but come with no guarantees.
 - IE 11+
 - Firefox 32+
 - Chrome 38+
-
-
-Bundle for the Browser
-----------------------
-
-Follow the package install instructions first.
-
-```bash
-npm install --save-dev browserify
-browserify myapp.js -o mybundle.js
-```
 
 
 Usage Examples
