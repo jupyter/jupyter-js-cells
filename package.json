@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
+    "jupyter-js-input-area": "0.0.2",
     "phosphor-observablelist": "^1.0.0-beta",
     "phosphor-signaling": "^1.2.0",
     "phosphor-widget": "^1.0.0-beta.1"
