@@ -3,3 +3,4 @@
 'use strict';
 
 export * from './CellViewModel';
+export * from './CellWidget';

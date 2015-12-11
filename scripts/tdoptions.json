@@ -7,5 +7,6 @@
   "out": "docs/api",
   "src": [
     "src/index.ts",
+    "typings/es6/es6-promise.d.ts"
   ]
 }
