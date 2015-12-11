@@ -4,8 +4,9 @@
   "moduleResolution": "node",
   "excludeNotExported": true,
   "mode": "file",
-  "out": "docs",
+  "out": "docs/api",
   "src": [
     "src/index.ts",
+    "typings/es6/es6-promise.d.ts"
   ]
 }
