@@ -26,7 +26,7 @@ import {
   Widget
 } from 'phosphor-widget';
 
-import './index.css';
+//import './index.css';
 
 
 /**
