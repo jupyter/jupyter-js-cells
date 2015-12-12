@@ -129,7 +129,6 @@ interface IBaseCellViewModel {
  */
 export
 interface ICodeCellViewModel extends IBaseCellViewModel {
-
   output: IOutputAreaViewModel;
 }
 
@@ -300,6 +299,8 @@ class CodeCellViewModel extends BaseCellViewModel implements ICodeCellViewModel 
   run(): void {
     this.executeRequest.emit(this.input.textEditor.text);
   }
+  
+  type: CellType = CellType.Code;
 }
 
 
@@ -345,4 +346,6 @@ class MarkdownCellViewModel extends BaseCellViewModel implements IMarkdownCellVi
   run(): void {
     this.rendered = true;
   }
+  
+  type: CellType = CellType.Markdown;
 }
