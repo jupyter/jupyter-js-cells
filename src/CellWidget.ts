@@ -109,7 +109,12 @@ class MarkdownCellWidget extends Panel {
     model.input.textEditor.mimetype = 'text/x-gfm';
     this.input = new InputAreaWidget(model.input);
     this.rendered = new Widget();
-    this.children.assign([this.input]);
+    if (model.rendered) {
+      this.children.assign([this.rendered])
+      this.renderInput()
+    } else {
+      this.children.assign([this.input]);
+    }
     model.stateChanged.connect(this.modelStateChanged, this);
   }
 
