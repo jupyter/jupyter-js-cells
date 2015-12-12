@@ -58,6 +58,11 @@
     "lib/*.js",
     "lib/*.d.ts"
   ],
+  "system": {
+    "npmIgnore": [
+      "devDependencies"
+    ]
+  },
   "author": "Project Jupyter",
   "license": "BSD-3-Clause",
   "bugs": {
