@@ -82,6 +82,7 @@ interface IBaseCellViewModel {
    */
   stateChanged: ISignal<IBaseCellViewModel, IChangedArgs<any>>;
 
+  requestSelection: ISignal<IBaseCellViewModel, void>;
   /**
    * Get namespaced metadata about the cell.
    */
@@ -181,6 +182,7 @@ class BaseCellViewModel implements IBaseCellViewModel {
    */
   static stateChangedSignal = new Signal<IBaseCellViewModel, IChangedArgs<any>>();
 
+  static requestSelectionSignal = new Signal<IBaseCellViewModel, void>();
 
   /**
    * A signal emitted when the state of the model changes.
@@ -190,6 +192,10 @@ class BaseCellViewModel implements IBaseCellViewModel {
    */
   get stateChanged(): ISignal<IBaseCellViewModel, IChangedArgs<any>> {
     return BaseCellViewModel.stateChangedSignal.bind(this);
+  }
+
+  get requestSelection(): ISignal<IBaseCellViewModel, void> {
+    return BaseCellViewModel.requestSelectionSignal.bind(this);
   }
 
   /**
@@ -242,26 +248,6 @@ export
 class CodeCellViewModel extends BaseCellViewModel implements ICodeCellViewModel {
 
   /**
-   * A signal emitted when the state of the model changes.
-   *
-   * **See also:** [[stateChanged]]
-   */
-  static executeRequestSignal = new Signal<ICodeCellViewModel, string>();
-
-
-  /**
-   * A signal emitted when the cell is requesting execution.
-   * 
-   * TODO: Do we need this execute signal?
-   *
-   * #### Notes
-   * This is a pure delegate to the [[stateChangedSignal]].
-   */
-  get executeRequest() {
-    return CodeCellViewModel.executeRequestSignal.bind(this);
-  }
-
-  /**
   * A property descriptor holding the output area view model.
   * 
   * TODO: Do we need this execute signal?
@@ -297,7 +283,6 @@ class CodeCellViewModel extends BaseCellViewModel implements ICodeCellViewModel 
    * Run the cell
    */
   run(): void {
-    this.executeRequest.emit(this.input.textEditor.text);
   }
   
   type: CellType = CellType.Code;
