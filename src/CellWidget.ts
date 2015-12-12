@@ -11,7 +11,7 @@ import {
 } from 'phosphor-widget';
 
 import {
-    ICodeCellViewModel, IMarkdownCellViewModel
+    ICodeCellViewModel, IMarkdownCellViewModel, ICellViewModel
 } from './CellViewModel';
 
 import {
@@ -24,11 +24,30 @@ import {
 
 import * as marked from 'marked';
 
+export
+class CellWidget extends Panel {
+  constructor() {
+    super();
+    // we make the cell focusable by setting the tabIndex
+    this.node.tabIndex = -1;
+    
+    // bind events that can select the cell
+    // see https://github.com/jupyter/notebook/blob/203ccd3d4496cc22e6a1c5e6ece9f5a7d791472a/notebook/static/notebook/js/cell.js#L178
+    
+    this.node.onclick = () => {
+      // TODO: how can we just have .emit()?
+      this._model.requestSelection.emit(void 0);
+    }
+  }
+  
+  protected _model: ICellViewModel;
+  
+}
 /**
  * A widget for a code cell.
  */
 export
-class CodeCellWidget extends Panel {
+class CodeCellWidget extends CellWidget {
 
   /**
    * Construct a code cell widget.
@@ -81,7 +100,7 @@ class CodeCellWidget extends Panel {
 
   protected input: InputAreaWidget;
   protected output: OutputAreaWidget;
-  private _model: ICodeCellViewModel;
+  protected _model: ICodeCellViewModel;
 }
 
 
@@ -95,7 +114,7 @@ class CodeCellWidget extends Panel {
  * updating the rendered text in all of these cases.
  */
 export
-class MarkdownCellWidget extends Panel {
+class MarkdownCellWidget extends CellWidget {
 
   /**
    * Construct a Markdown cell widget.
@@ -104,6 +123,7 @@ class MarkdownCellWidget extends Panel {
     super();
     this.addClass('jp-Cell');
     this.addClass('jp-MarkdownCell');
+
     this._model = model;
     // Insist on the Github-flavored markdown mode
     model.input.textEditor.mimetype = 'text/x-gfm';
@@ -167,5 +187,5 @@ class MarkdownCellWidget extends Panel {
 
   protected input: InputAreaWidget;
   protected rendered: Widget;
-  private _model: IMarkdownCellViewModel;
+  protected _model: IMarkdownCellViewModel;
 }
