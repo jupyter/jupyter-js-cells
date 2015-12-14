@@ -82,7 +82,6 @@ interface IBaseCellViewModel {
    */
   stateChanged: ISignal<IBaseCellViewModel, IChangedArgs<any>>;
 
-  requestSelection: ISignal<IBaseCellViewModel, void>;
   /**
    * Get namespaced metadata about the cell.
    */
@@ -182,8 +181,6 @@ class BaseCellViewModel implements IBaseCellViewModel {
    */
   static stateChangedSignal = new Signal<IBaseCellViewModel, IChangedArgs<any>>();
 
-  static requestSelectionSignal = new Signal<IBaseCellViewModel, void>();
-
   /**
    * A signal emitted when the state of the model changes.
    *
@@ -192,10 +189,6 @@ class BaseCellViewModel implements IBaseCellViewModel {
    */
   get stateChanged(): ISignal<IBaseCellViewModel, IChangedArgs<any>> {
     return BaseCellViewModel.stateChangedSignal.bind(this);
-  }
-
-  get requestSelection(): ISignal<IBaseCellViewModel, void> {
-    return BaseCellViewModel.requestSelectionSignal.bind(this);
   }
 
   /**

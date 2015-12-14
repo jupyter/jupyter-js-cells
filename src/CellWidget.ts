@@ -30,14 +30,6 @@ class CellWidget extends Panel {
     super();
     // we make the cell focusable by setting the tabIndex
     this.node.tabIndex = -1;
-    
-    // bind events that can select the cell
-    // see https://github.com/jupyter/notebook/blob/203ccd3d4496cc22e6a1c5e6ece9f5a7d791472a/notebook/static/notebook/js/cell.js#L178
-    
-    this.node.onclick = () => {
-      // TODO: how can we just have .emit()?
-      this._model.requestSelection.emit(void 0);
-    }
   }
   
   protected _model: ICellViewModel;
