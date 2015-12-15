@@ -112,15 +112,6 @@ interface IBaseCellViewModel {
    */
   //marked: boolean;
 
-  /**
-   * Run the cell.
-   * 
-   * This basically means: do the right thing with the input.
-   * Perhaps this should be in a subclass ExecutableCell.  Do we want to have a run() method on raw cells?
-   */
-  run(): void;
-
-
 }
 
 
@@ -222,12 +213,6 @@ class BaseCellViewModel implements IBaseCellViewModel {
   }
 
   /**
-   * Run the cell
-   */
-  run(): void {
-  }
-
-  /**
    * The type of cell.
    */
   type: CellType;
@@ -271,12 +256,6 @@ class CodeCellViewModel extends BaseCellViewModel implements ICodeCellViewModel 
   set output(value: IOutputAreaViewModel) {
       CodeCellViewModel.outputProperty.set(this, value);
   }
-
-  /**
-   * Run the cell
-   */
-  run(): void {
-  }
   
   type: CellType = CellType.Code;
 }
@@ -316,13 +295,6 @@ class MarkdownCellViewModel extends BaseCellViewModel implements IMarkdownCellVi
    */
   set rendered(value: boolean) {
     MarkdownCellViewModel.renderedProperty.set(this, value);
-  }
-  
-  /**
-   * A convenience method to render the cell.
-   */
-  run(): void {
-    this.rendered = true;
   }
   
   type: CellType = CellType.Markdown;
