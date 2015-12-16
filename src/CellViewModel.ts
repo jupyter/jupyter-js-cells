@@ -299,3 +299,18 @@ class MarkdownCellViewModel extends BaseCellViewModel implements IMarkdownCellVi
   
   type: CellType = CellType.Markdown;
 }
+
+export
+function isMarkdownCell(m: IBaseCellViewModel): m is IMarkdownCellViewModel {
+  return (m.type === CellType.Markdown);
+}
+
+export
+function isCodeCell(m: IBaseCellViewModel): m is ICodeCellViewModel {
+  return (m.type === CellType.Code);
+}
+
+export
+function isRawCell(m: IBaseCellViewModel): m is IRawCellViewModel {
+  return (m.type === CellType.Raw);
+}

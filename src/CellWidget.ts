@@ -171,12 +171,27 @@ class MarkdownCellWidget extends CellWidget {
   }
   
   /**
+   * Update the input area, creating a new input area
+   * widget and detaching the old one.
+   */
+  updateRendered(rendered: boolean) {
+    if (rendered) {
+      this.renderInput();
+    } else {
+      this.editInput();
+    }
+  }
+
+  /**
    * Change handler for model updates.
    */
   protected modelStateChanged(sender: IMarkdownCellViewModel, args: IChangedArgs<any>) {
     switch(args.name) {
     case 'input':
       this.updateInputArea(args.newValue);
+      break;
+    case 'rendered':
+      this.updateRendered(args.newValue);
       break;
     }
   }
