@@ -5,7 +5,10 @@ import {
 } from 'phosphor-widget';
 
 import {InputAreaViewModel} from 'jupyter-js-input-area';
-import {OutputAreaViewModel, consumeMessage} from 'jupyter-js-output-area';
+import {
+  OutputAreaViewModel, OutputAreaWidget, IOutputAreaViewModel,
+  OutputType, StreamName
+} from 'jupyter-js-output-area';
 import {TextEditorViewModel} from 'jupyter-js-input-area';
 
 
@@ -37,7 +40,7 @@ function main(): void {
   let mdCell = new MarkdownCellViewModel();
   mdCell.input = mdInputArea;
   let mdWidget = new MarkdownCellWidget(mdCell);
-  Widget.attach(mdWidget, document.body);
+  mdWidget.attach(document.body);
   
   // Hook up markdown cell control buttons
   let mdedit = document.getElementById('editMarkdown');
@@ -59,7 +62,7 @@ function main(): void {
   codeCell.input = codeInput;
   codeCell.output = codeOutput;  
   let codeWidget = new CodeCellWidget(codeCell);
-  Widget.attach(codeWidget, document.body);
+  codeWidget.attach(document.body);
   
   // Populate the output of the code cell
   System.import('example/data/data.json').then((data: any[]) => {
@@ -70,3 +73,54 @@ function main(): void {
 }
 
 main();
+
+/**
+  * A function to update an output area viewmodel to reflect a stream of messages 
+  */
+export
+function consumeMessage(msg: any, outputArea: IOutputAreaViewModel): void {
+    let output: any = {};
+    let content = msg.content;
+    switch (msg.header.msg_type) {
+    case 'clear_output':
+      outputArea.clear(content.wait)
+      break;
+    case 'stream':
+      output.outputType = OutputType.Stream;
+      output.text = content.text;
+      switch(content.name) {
+      case "stderr":
+        output.name = StreamName.StdErr;
+        break;
+      case "stdout":
+        output.name = StreamName.StdOut;
+        break;
+      default:
+        throw new Error(`Unrecognized stream type ${content.name}`);
+      }
+      outputArea.add(output);
+      break;
+    case 'display_data':
+      output.outputType = OutputType.DisplayData;
+      output.data = content.data;
+      output.metadata = content.metadata;
+      outputArea.add(output);
+      break;
+    case 'execute_result':
+      output.outputType = OutputType.ExecuteResult;
+      output.data = content.data;
+      output.metadata = content.metadata;
+      output.execution_count = content.execution_count;
+      outputArea.add(output);
+      break;
+    case 'error':
+      output.outputType = OutputType.Error;
+      output.ename = content.ename;
+      output.evalue = content.evalue;
+      output.traceback = content.traceback.join('\n');
+      outputArea.add(output);
+      break;
+    default:
+      console.error('Unhandled message', msg);
+    }
+}

@@ -35,6 +35,8 @@ class CellWidget extends Panel {
   protected _model: ICellViewModel;
   
 }
+
+
 /**
  * A widget for a code cell.
  */
@@ -51,10 +53,8 @@ class CodeCellWidget extends CellWidget {
     this._model = model;
     this.input = new InputAreaWidget(model.input);
     this.output = new OutputAreaWidget(model.output);
-    this.children.assign([this.input, this.output]);
-
-    this.output = new OutputAreaWidget(model.output);
-    this.children.assign([this.input, this.output]);
+    this.addChild(this.input);
+    this.addChild(this.output);
     model.stateChanged.connect(this.modelStateChanged, this);
   }
 
@@ -63,8 +63,9 @@ class CodeCellWidget extends CellWidget {
    * widget and detaching the old one.
    */
   updateInputArea(input: IInputAreaViewModel) {
+    this.input.dispose(); // removes from children
     this.input = new InputAreaWidget(input);
-    this.children.set(0, this.input);
+    this.insertChild(0, this.input);
   }
   
   /**
@@ -72,8 +73,9 @@ class CodeCellWidget extends CellWidget {
    * widget and detaching the old one.
    */
   updateOutputArea(output: IOutputAreaViewModel) {
+    this.output.dispose();
     this.output = new OutputAreaWidget(output);
-    this.children.set(1, this.output);
+    this.insertChild(1, this.output);
   }
 
   /**
@@ -122,10 +124,9 @@ class MarkdownCellWidget extends CellWidget {
     this.input = new InputAreaWidget(model.input);
     this.rendered = new Widget();
     if (model.rendered) {
-      this.children.assign([this.rendered])
-      this.renderInput()
+      this.renderInput();
     } else {
-      this.children.assign([this.input]);
+      this.editInput();
     }
     model.stateChanged.connect(this.modelStateChanged, this);
   }
@@ -139,7 +140,8 @@ class MarkdownCellWidget extends CellWidget {
    */
   renderInput() {
     this.rendered.node.innerHTML = marked(this._model.input.textEditor.text);
-    this.children.set(0, this.rendered);
+    this.input.parent = null;
+    this.addChild(this.rendered);
   }
   
   /**
@@ -150,7 +152,8 @@ class MarkdownCellWidget extends CellWidget {
    * Call [[renderInput]] to render the source.
    */
   editInput() {
-    this.children.set(0, this.input);
+    this.rendered.parent = null;
+    this.addChild(this.input);
   }
 
   /**
@@ -158,11 +161,12 @@ class MarkdownCellWidget extends CellWidget {
    * widget and detaching the old one.
    */
   updateInputArea(input: IInputAreaViewModel) {
+    this.input.dispose();
     this.input = new InputAreaWidget(input);
     if (this._model.rendered) {
       this.renderInput();
     } else {
-      this.children.set(0, this.input);
+      this.editInput();
     }
   }
   
