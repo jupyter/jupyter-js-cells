@@ -7,8 +7,12 @@ import {
 } from 'phosphor-properties';
 
 import {
-  Widget, Panel
+  Widget
 } from 'phosphor-widget';
+
+import {
+  Panel
+} from 'phosphor-panel';
 
 import {
     ICodeCellViewModel, IMarkdownCellViewModel, ICellViewModel
