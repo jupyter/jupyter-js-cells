@@ -9,8 +9,7 @@ import {
   OutputAreaViewModel, OutputAreaWidget, IOutputAreaViewModel,
   OutputType, StreamName
 } from 'jupyter-js-output-area';
-import {TextEditorViewModel} from 'jupyter-js-input-area';
-
+import {EditorModel} from 'jupyter-js-editor';
 
 import {
   CodeCellWidget, CodeCellViewModel, 
@@ -33,7 +32,7 @@ This is some text
 `;
 
 function main(): void {
-  let mdText = new TextEditorViewModel();
+  let mdText = new EditorModel();
   mdText.text = initialMD;
   let mdInputArea = new InputAreaViewModel();
   mdInputArea.textEditor = mdText;
@@ -52,7 +51,7 @@ function main(): void {
     mdWidget.renderInput()
   };
 
-  let codeText = new TextEditorViewModel();
+  let codeText = new EditorModel();
   codeText.text = initialCode;
   codeText.mimetype = 'text/x-python';
   let codeInput = new InputAreaViewModel();

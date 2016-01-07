@@ -38,7 +38,7 @@
     "build:src": "tsc --project src && node scripts/copycss.js",
     "build:test": "tsc --project test",
     "build:example": "tsc --project example",
-    "build": "npm run build:src && npm run build:example && npm run build:test",
+    "build": "npm run build:src",
     "docs": "typedoc --options scripts/tdoptions.json",
     "postinstall": "npm dedupe",
     "prepublish": "npm run build",
