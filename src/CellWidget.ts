@@ -11,7 +11,7 @@ import {
 } from 'phosphor-widget';
 
 import {
-  Panel
+  Panel, PanelLayout
 } from 'phosphor-panel';
 
 import {
@@ -29,11 +29,12 @@ import {
 import * as marked from 'marked';
 
 export
-class CellWidget extends Panel {
+class CellWidget extends Widget {
   constructor() {
     super();
     // we make the cell focusable by setting the tabIndex
     this.node.tabIndex = -1;
+    this.layout = new PanelLayout();
   }
   
   protected _model: ICellViewModel;
@@ -57,8 +58,8 @@ class CodeCellWidget extends CellWidget {
     this._model = model;
     this.input = new InputAreaWidget(model.input);
     this.output = new OutputAreaWidget(model.output);
-    this.addChild(this.input);
-    this.addChild(this.output);
+    (this.layout as PanelLayout).addChild(this.input);
+    (this.layout as PanelLayout).addChild(this.output);
     model.stateChanged.connect(this.modelStateChanged, this);
   }
 
@@ -66,20 +67,20 @@ class CodeCellWidget extends CellWidget {
    * Update the input area, creating a new input area
    * widget and detaching the old one.
    */
-  updateInputArea(input: IInputAreaViewModel) {
+  protected updateInputArea(input: IInputAreaViewModel) {
     this.input.dispose(); // removes from children
     this.input = new InputAreaWidget(input);
-    this.insertChild(0, this.input);
+    (this.layout as PanelLayout).insertChild(0, this.input);
   }
   
   /**
    * Update the output area, creating a new output area
    * widget and detaching the old one.
    */
-  updateOutputArea(output: IOutputAreaViewModel) {
+  protected updateOutputArea(output: IOutputAreaViewModel) {
     this.output.dispose();
     this.output = new OutputAreaWidget(output);
-    this.insertChild(1, this.output);
+    (this.layout as PanelLayout).insertChild(1, this.output);
   }
 
   /**
@@ -145,7 +146,7 @@ class MarkdownCellWidget extends CellWidget {
   renderInput() {
     this.rendered.node.innerHTML = marked(this._model.input.textEditor.text);
     this.input.parent = null;
-    this.addChild(this.rendered);
+    (this.layout as PanelLayout).addChild(this.rendered);
   }
   
   /**
@@ -157,14 +158,14 @@ class MarkdownCellWidget extends CellWidget {
    */
   editInput() {
     this.rendered.parent = null;
-    this.addChild(this.input);
+    (this.layout as PanelLayout).addChild(this.input);
   }
 
   /**
    * Update the input area, creating a new input area
    * widget and detaching the old one.
    */
-  updateInputArea(input: IInputAreaViewModel) {
+  protected updateInputArea(input: IInputAreaViewModel) {
     this.input.dispose();
     this.input = new InputAreaWidget(input);
     if (this._model.rendered) {
@@ -178,7 +179,7 @@ class MarkdownCellWidget extends CellWidget {
    * Update the input area, creating a new input area
    * widget and detaching the old one.
    */
-  updateRendered(rendered: boolean) {
+  protected updateRendered(rendered: boolean) {
     if (rendered) {
       this.renderInput();
     } else {
