@@ -12,9 +12,11 @@ import {
 import {EditorModel} from 'jupyter-js-editor';
 
 import {
-  CodeCellWidget, CodeCellModel, 
+  CodeCellWidget, CodeCellModel,
   MarkdownCellModel, MarkdownCellWidget
-} from '../lib/index';
+} from '../../lib/index';
+
+import '../index.css';
 
 let initialCode = `def f(n):
     for mdInputArea in range(n):
@@ -40,7 +42,7 @@ function main(): void {
   mdCell.input = mdInputArea;
   let mdWidget = new MarkdownCellWidget(mdCell);
   mdWidget.attach(document.body);
-  
+
   // Hook up markdown cell control buttons
   let mdedit = document.getElementById('editMarkdown');
   let mdrender = document.getElementById('renderMarkdown');
@@ -59,22 +61,21 @@ function main(): void {
   let codeOutput = new OutputAreaModel();
   let codeCell = new CodeCellModel();
   codeCell.input = codeInput;
-  codeCell.output = codeOutput;  
+  codeCell.output = codeOutput;
   let codeWidget = new CodeCellWidget(codeCell);
   codeWidget.attach(document.body);
-  
+
   // Populate the output of the code cell
-  System.import('example/data/data.json').then((data: any[]) => {
-    data.forEach((msg) => {
-      consumeMessage(msg, codeOutput);
-    })
+  let data = require('../data/data.json');
+  data.forEach((msg: any) => {
+    consumeMessage(msg, codeOutput);
   })
 }
 
-main();
+window.onload = main;
 
 /**
-  * A function to update an output area Model to reflect a stream of messages 
+  * A function to update an output area Model to reflect a stream of messages
   */
 export
 function consumeMessage(msg: any, outputArea: IOutputAreaModel): void {
