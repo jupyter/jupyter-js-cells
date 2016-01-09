@@ -4,10 +4,10 @@
 
 
 import {
-  IInputAreaViewModel
+  IInputAreaModel
 } from 'jupyter-js-input-area';
 import {
-  IOutputAreaViewModel
+  IOutputAreaModel
 } from 'jupyter-js-output-area';
 
 import {
@@ -25,9 +25,6 @@ import {
 import {
   Widget
 } from 'phosphor-widget';
-
-//import './index.css';
-
 
 /**
  * An enum which describes the type of cell.
@@ -65,7 +62,7 @@ interface ISerializable {
  * The definition of a model object for a base cell.
  */
 export
-interface IBaseCellViewModel {
+interface IBaseCellModel {
 
   /**
    * The type of cell.
@@ -80,7 +77,7 @@ interface IBaseCellViewModel {
   /**
    * A signal emitted when state of the cell changes.
    */
-  stateChanged: ISignal<IBaseCellViewModel, IChangedArgs<any>>;
+  stateChanged: ISignal<IBaseCellModel, IChangedArgs<any>>;
 
   /**
    * Get namespaced metadata about the cell.
@@ -90,7 +87,7 @@ interface IBaseCellViewModel {
   /**
    * The input area of the cell.
    */
-  input: IInputAreaViewModel;
+  input: IInputAreaModel;
 
   /**
    * Whether a cell is deletable.
@@ -119,8 +116,8 @@ interface IBaseCellViewModel {
  * The definition of a code cell.
  */
 export
-interface ICodeCellViewModel extends IBaseCellViewModel {
-  output: IOutputAreaViewModel;
+interface ICodeCellModel extends IBaseCellModel {
+  output: IOutputAreaModel;
 }
 
 
@@ -128,7 +125,7 @@ interface ICodeCellViewModel extends IBaseCellViewModel {
  * The definition of a raw cell.
  */
 export
-interface IRawCellViewModel extends IBaseCellViewModel {
+interface IRawCellModel extends IBaseCellModel {
 
   /**
    * The raw cell format.
@@ -141,7 +138,7 @@ interface IRawCellViewModel extends IBaseCellViewModel {
  * The definition of a markdown cell.
  */
 export
-interface IMarkdownCellViewModel extends IBaseCellViewModel {
+interface IMarkdownCellModel extends IBaseCellModel {
   /**
    * Whether a cell is rendered.
    */
@@ -154,23 +151,23 @@ interface IMarkdownCellViewModel extends IBaseCellViewModel {
  * A model consisting of any valid cell type.
  */
 export
-type ICellViewModel =  (
-  IRawCellViewModel | IMarkdownCellViewModel | ICodeCellViewModel
+type ICellModel =  (
+  IRawCellModel | IMarkdownCellModel | ICodeCellModel
 );
 
 
 /**
- * An implemention of the base cell viewmodel.
+ * An implemention of the base cell Model.
  */
 export
-class BaseCellViewModel implements IBaseCellViewModel {
+class BaseCellModel implements IBaseCellModel {
 
   /**
    * A signal emitted when the state of the model changes.
    *
    * **See also:** [[stateChanged]]
    */
-  static stateChangedSignal = new Signal<IBaseCellViewModel, IChangedArgs<any>>();
+  static stateChangedSignal = new Signal<IBaseCellModel, IChangedArgs<any>>();
 
   /**
    * A signal emitted when the state of the model changes.
@@ -178,38 +175,38 @@ class BaseCellViewModel implements IBaseCellViewModel {
    * #### Notes
    * This is a pure delegate to the [[stateChangedSignal]].
    */
-  get stateChanged(): ISignal<IBaseCellViewModel, IChangedArgs<any>> {
-    return BaseCellViewModel.stateChangedSignal.bind(this);
+  get stateChanged(): ISignal<IBaseCellModel, IChangedArgs<any>> {
+    return BaseCellModel.stateChangedSignal.bind(this);
   }
 
   /**
-   * A property descriptor for the input area view model.
+   * A property descriptor for the input area model.
    *
    * **See also:** [[input]]
    */
-  static inputProperty = new Property<IBaseCellViewModel, IInputAreaViewModel>({
+  static inputProperty = new Property<IBaseCellModel, IInputAreaModel>({
     name: 'input',
-    notify: BaseCellViewModel.stateChangedSignal,
+    notify: BaseCellModel.stateChangedSignal,
   });
 
   /**
-   * Get the input area view model.
+   * Get the input area model.
    *
    * #### Notes
    * This is a pure delegate to the [[inputProperty]].
    */
   get input() {
-    return BaseCellViewModel.inputProperty.get(this);
+    return BaseCellModel.inputProperty.get(this);
   }
   
   /**
-   * Set the input area view model.
+   * Set the input area model.
    *
    * #### Notes
    * This is a pure delegate to the [[inputProperty]].
    */
-  set input(value: IInputAreaViewModel) {
-    BaseCellViewModel.inputProperty.set(this, value);
+  set input(value: IInputAreaModel) {
+    BaseCellModel.inputProperty.set(this, value);
   }
 
   /**
@@ -220,41 +217,41 @@ class BaseCellViewModel implements IBaseCellViewModel {
 
 
 /**
- * An implementation of a code cell viewmodel.
+ * An implementation of a code cell Model.
  */
 export
-class CodeCellViewModel extends BaseCellViewModel implements ICodeCellViewModel {
+class CodeCellModel extends BaseCellModel implements ICodeCellModel {
 
   /**
-  * A property descriptor holding the output area view model.
+  * A property descriptor holding the output area model.
   * 
   * TODO: Do we need this execute signal?
   * **See also:** [[output]]
   */
-  static outputProperty = new Property<CodeCellViewModel, IOutputAreaViewModel>({
+  static outputProperty = new Property<CodeCellModel, IOutputAreaModel>({
       name: 'output',
-      notify: CodeCellViewModel.stateChangedSignal,
+      notify: CodeCellModel.stateChangedSignal,
   });
 
 
   /**
-   * Get the output area view model.
+   * Get the output area model.
    *
    * #### Notes
    * This is a pure delegate to the [[outputProperty]].
    */
   get output() { 
-      return CodeCellViewModel.outputProperty.get(this); 
+      return CodeCellModel.outputProperty.get(this); 
   }
   
   /**
-   * Set the output area view model.
+   * Set the output area model.
    *
    * #### Notes
    * This is a pure delegate to the [[outputProperty]].
    */
-  set output(value: IOutputAreaViewModel) {
-      CodeCellViewModel.outputProperty.set(this, value);
+  set output(value: IOutputAreaModel) {
+      CodeCellModel.outputProperty.set(this, value);
   }
   
   type: CellType = CellType.Code;
@@ -262,19 +259,19 @@ class CodeCellViewModel extends BaseCellViewModel implements ICodeCellViewModel 
 
 
 /**
- * An implementation of a Markdown cell viewmodel.
+ * An implementation of a Markdown cell Model.
  */
 export
-class MarkdownCellViewModel extends BaseCellViewModel implements IMarkdownCellViewModel {
+class MarkdownCellModel extends BaseCellModel implements IMarkdownCellModel {
 
   /**
    * A property descriptor which determines whether the input area should be rendered.
    *
    * **See also:** [[rendered]]
    */
-  static renderedProperty = new Property<MarkdownCellViewModel, boolean>({
+  static renderedProperty = new Property<MarkdownCellModel, boolean>({
     name: 'rendered',
-    notify: MarkdownCellViewModel.stateChangedSignal,
+    notify: MarkdownCellModel.stateChangedSignal,
   });
 
   /**
@@ -284,7 +281,7 @@ class MarkdownCellViewModel extends BaseCellViewModel implements IMarkdownCellVi
    * This is a pure delegate to the [[renderedProperty]].
    */
   get rendered() {
-    return MarkdownCellViewModel.renderedProperty.get(this);
+    return MarkdownCellModel.renderedProperty.get(this);
   }
 
   /**
@@ -294,23 +291,32 @@ class MarkdownCellViewModel extends BaseCellViewModel implements IMarkdownCellVi
    * This is a pure delegate to the [[renderedProperty]].
    */
   set rendered(value: boolean) {
-    MarkdownCellViewModel.renderedProperty.set(this, value);
+    MarkdownCellModel.renderedProperty.set(this, value);
   }
   
   type: CellType = CellType.Markdown;
 }
 
+/**
+  * A type guard for testing if a cell is a markdown cell.
+  */
 export
-function isMarkdownCell(m: IBaseCellViewModel): m is IMarkdownCellViewModel {
+function isMarkdownCell(m: IBaseCellModel): m is IMarkdownCellModel {
   return (m.type === CellType.Markdown);
 }
 
+/**
+  * A type guard for testing if a cell is a code cell.
+  */
 export
-function isCodeCell(m: IBaseCellViewModel): m is ICodeCellViewModel {
+function isCodeCell(m: IBaseCellModel): m is ICodeCellModel {
   return (m.type === CellType.Code);
 }
 
+/**
+  * A type guard for testing if a cell is a raw cell.
+  */
 export
-function isRawCell(m: IBaseCellViewModel): m is IRawCellViewModel {
+function isRawCell(m: IBaseCellModel): m is IRawCellModel {
   return (m.type === CellType.Raw);
 }

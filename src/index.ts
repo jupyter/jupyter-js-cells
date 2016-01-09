@@ -2,5 +2,5 @@
 // Distributed under the terms of the Modified BSD License.
 'use strict';
 
-export * from './CellViewModel';
-export * from './CellWidget';
+export * from './model';
+export * from './widget';

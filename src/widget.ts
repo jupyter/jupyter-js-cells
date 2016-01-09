@@ -15,21 +15,24 @@ import {
 } from 'phosphor-panel';
 
 import {
-    ICodeCellViewModel, IMarkdownCellViewModel, ICellViewModel
-} from './CellViewModel';
+    ICodeCellModel, IMarkdownCellModel, ICellModel
+} from './model';
 
 import {
-    InputAreaWidget, IInputAreaViewModel
+    InputAreaWidget, IInputAreaModel
 } from 'jupyter-js-input-area';
 
 import {
-    OutputAreaWidget, IOutputAreaViewModel
+    OutputAreaWidget, IOutputAreaModel
 } from 'jupyter-js-output-area';
 
 import * as marked from 'marked';
 
+/**
+ * A base cell widget.
+ */
 export
-class CellWidget extends Widget {
+abstract class CellWidget extends Widget {
   constructor() {
     super();
     // we make the cell focusable by setting the tabIndex
@@ -37,7 +40,7 @@ class CellWidget extends Widget {
     this.layout = new PanelLayout();
   }
   
-  protected _model: ICellViewModel;
+  protected _model: ICellModel;
   
 }
 
@@ -51,7 +54,7 @@ class CodeCellWidget extends CellWidget {
   /**
    * Construct a code cell widget.
    */
-  constructor(model: ICodeCellViewModel) {
+  constructor(model: ICodeCellModel) {
     super();
     this.addClass('jp-Cell');
     this.addClass('jp-CodeCell');
@@ -67,7 +70,7 @@ class CodeCellWidget extends CellWidget {
    * Update the input area, creating a new input area
    * widget and detaching the old one.
    */
-  protected updateInputArea(input: IInputAreaViewModel) {
+  protected updateInputArea(input: IInputAreaModel) {
     this.input.dispose(); // removes from children
     this.input = new InputAreaWidget(input);
     (this.layout as PanelLayout).insertChild(0, this.input);
@@ -77,7 +80,7 @@ class CodeCellWidget extends CellWidget {
    * Update the output area, creating a new output area
    * widget and detaching the old one.
    */
-  protected updateOutputArea(output: IOutputAreaViewModel) {
+  protected updateOutputArea(output: IOutputAreaModel) {
     this.output.dispose();
     this.output = new OutputAreaWidget(output);
     (this.layout as PanelLayout).insertChild(1, this.output);
@@ -86,7 +89,7 @@ class CodeCellWidget extends CellWidget {
   /**
    * Change handler for model updates.
    */
-  protected modelStateChanged(sender: ICodeCellViewModel, args: IChangedArgs<any>) {
+  protected modelStateChanged(sender: ICodeCellModel, args: IChangedArgs<any>) {
     switch(args.name) {
     case 'input':
       this.updateInputArea(args.newValue);
@@ -99,7 +102,7 @@ class CodeCellWidget extends CellWidget {
 
   protected input: InputAreaWidget;
   protected output: OutputAreaWidget;
-  protected _model: ICodeCellViewModel;
+  protected _model: ICodeCellModel;
 }
 
 
@@ -118,7 +121,7 @@ class MarkdownCellWidget extends CellWidget {
   /**
    * Construct a Markdown cell widget.
    */
-  constructor(model: IMarkdownCellViewModel) {
+  constructor(model: IMarkdownCellModel) {
     super();
     this.addClass('jp-Cell');
     this.addClass('jp-MarkdownCell');
@@ -165,7 +168,7 @@ class MarkdownCellWidget extends CellWidget {
    * Update the input area, creating a new input area
    * widget and detaching the old one.
    */
-  protected updateInputArea(input: IInputAreaViewModel) {
+  protected updateInputArea(input: IInputAreaModel) {
     this.input.dispose();
     this.input = new InputAreaWidget(input);
     if (this._model.rendered) {
@@ -190,7 +193,7 @@ class MarkdownCellWidget extends CellWidget {
   /**
    * Change handler for model updates.
    */
-  protected modelStateChanged(sender: IMarkdownCellViewModel, args: IChangedArgs<any>) {
+  protected modelStateChanged(sender: IMarkdownCellModel, args: IChangedArgs<any>) {
     switch(args.name) {
     case 'input':
       this.updateInputArea(args.newValue);
@@ -203,5 +206,5 @@ class MarkdownCellWidget extends CellWidget {
 
   protected input: InputAreaWidget;
   protected rendered: Widget;
-  protected _model: IMarkdownCellViewModel;
+  protected _model: IMarkdownCellModel;
 }
