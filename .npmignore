@@ -1,6 +1,5 @@
-*.suo
-*.user
-.DS_Store
+# Same as gitignore, except we *do* want transpiled files
+
 
 # Logs
 logs
@@ -11,14 +10,13 @@ pids
 *.pid
 *.seed
 
+# OS X
+.DS_Store
+
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
-# Built/transpiled fun
-docs/api
-lib/
-*.map
-example/*.js
-test/build
-test/coverage
+
+
+
