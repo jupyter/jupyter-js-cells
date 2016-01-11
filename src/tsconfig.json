@@ -12,6 +12,6 @@
   "files": [
     "index.ts",
     "../typings/es6/es6-promise.d.ts",
-    "../typings/marked.d.ts"
+    "../typings/marked/marked.d.ts"
   ]
 }
