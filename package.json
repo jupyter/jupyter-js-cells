@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "jupyter-js-input-area": "file:../jupyter-js-input-area",
-    "jupyter-js-output-area": "file:../jupyter-js-output-area",
+    "jupyter-js-input-area": "^0.0.3",
+    "jupyter-js-output-area": "^0.3.0",
     "marked": "^0.3.5",
     "phosphor-observablelist": "^1.0.0-beta",
     "phosphor-signaling": "^1.2.0",
