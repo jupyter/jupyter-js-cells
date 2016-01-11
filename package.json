@@ -17,6 +17,7 @@
     "expect.js": "^0.3.1",
     "glob-copy": "^0.1.0",
     "istanbul": "^0.3.18",
+    "jupyter-js-editor": "^0.1.9",
     "karma": "^0.13.9",
     "karma-browserify": "^4.3.0",
     "karma-chrome-launcher": "^0.2.0",

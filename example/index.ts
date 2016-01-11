@@ -4,16 +4,16 @@ import {
   Widget
 } from 'phosphor-widget';
 
-import {InputAreaViewModel} from 'jupyter-js-input-area';
+import {InputAreaModel} from 'jupyter-js-input-area';
 import {
-  OutputAreaViewModel, OutputAreaWidget, IOutputAreaViewModel,
+  OutputAreaModel, OutputAreaWidget, IOutputAreaModel,
   OutputType, StreamName
 } from 'jupyter-js-output-area';
 import {EditorModel} from 'jupyter-js-editor';
 
 import {
-  CodeCellWidget, CodeCellViewModel, 
-  MarkdownCellViewModel, MarkdownCellWidget
+  CodeCellWidget, CodeCellModel, 
+  MarkdownCellModel, MarkdownCellWidget
 } from '../lib/index';
 
 let initialCode = `def f(n):
@@ -34,9 +34,9 @@ This is some text
 function main(): void {
   let mdText = new EditorModel();
   mdText.text = initialMD;
-  let mdInputArea = new InputAreaViewModel();
+  let mdInputArea = new InputAreaModel();
   mdInputArea.textEditor = mdText;
-  let mdCell = new MarkdownCellViewModel();
+  let mdCell = new MarkdownCellModel();
   mdCell.input = mdInputArea;
   let mdWidget = new MarkdownCellWidget(mdCell);
   mdWidget.attach(document.body);
@@ -54,10 +54,10 @@ function main(): void {
   let codeText = new EditorModel();
   codeText.text = initialCode;
   codeText.mimetype = 'text/x-python';
-  let codeInput = new InputAreaViewModel();
+  let codeInput = new InputAreaModel();
   codeInput.textEditor = codeText;
-  let codeOutput = new OutputAreaViewModel();
-  let codeCell = new CodeCellViewModel();
+  let codeOutput = new OutputAreaModel();
+  let codeCell = new CodeCellModel();
   codeCell.input = codeInput;
   codeCell.output = codeOutput;  
   let codeWidget = new CodeCellWidget(codeCell);
@@ -74,10 +74,10 @@ function main(): void {
 main();
 
 /**
-  * A function to update an output area viewmodel to reflect a stream of messages 
+  * A function to update an output area Model to reflect a stream of messages 
   */
 export
-function consumeMessage(msg: any, outputArea: IOutputAreaViewModel): void {
+function consumeMessage(msg: any, outputArea: IOutputAreaModel): void {
     let output: any = {};
     let content = msg.content;
     switch (msg.header.msg_type) {
