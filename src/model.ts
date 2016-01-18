@@ -301,7 +301,7 @@ class MarkdownCellModel extends BaseCellModel implements IMarkdownCellModel {
   * A type guard for testing if a cell is a markdown cell.
   */
 export
-function isMarkdownCell(m: IBaseCellModel): m is IMarkdownCellModel {
+function isMarkdownCell(m: ICellModel): m is IMarkdownCellModel {
   return (m.type === CellType.Markdown);
 }
 
@@ -309,7 +309,7 @@ function isMarkdownCell(m: IBaseCellModel): m is IMarkdownCellModel {
   * A type guard for testing if a cell is a code cell.
   */
 export
-function isCodeCell(m: IBaseCellModel): m is ICodeCellModel {
+function isCodeCell(m: ICellModel): m is ICodeCellModel {
   return (m.type === CellType.Code);
 }
 
@@ -317,6 +317,6 @@ function isCodeCell(m: IBaseCellModel): m is ICodeCellModel {
   * A type guard for testing if a cell is a raw cell.
   */
 export
-function isRawCell(m: IBaseCellModel): m is IRawCellModel {
+function isRawCell(m: ICellModel): m is IRawCellModel {
   return (m.type === CellType.Raw);
 }
