@@ -1,5 +1,8 @@
-Jupyter JS Cells
-================
+DEPRECATED: Jupyter JS Cells
+============================
+
+
+This code has been merged into the [jupyter-js-notebook](https://github.com/jupyter/jupyter-js-notebook) repository, where it will continue to be developed.
 
 Cell widget for Jupyter.
 
